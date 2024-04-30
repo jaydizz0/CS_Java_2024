@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class JaydenVigenereCipher extends JaydenCeaserCipher {
+    public static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+    // encrypt method which itterates through an array of letter indexes to shift the users message and displays it
+    public static String encryptVigenere(String userWord, String key) {
+        String encryptedString = "";
+        key = key.toLowerCase();
+        userWord = userWord.toLowerCase();
+        ArrayList<Integer> characterShift = shift(key);
+        int keyLength = key.length();
+        for (int i = 0; i < userWord.length(); i++) {
+            int shift = characterShift.get(i % keyLength);
+            Character character = userWord.charAt(i);
+            String stringCharacter = character.toString();
+            String encryptedLetter = JaydenCeaserCipher.encrypt(stringCharacter, shift);
+            encryptedString += encryptedLetter;
+        }
+        return encryptedString;
+    }   
+
+    // Decrypt method which utilizes an array to illiterate and shift through a users encrypted message and displays it 
+    public static String decryptVigenere(String userWord, String key) {
+        String encryptedString = "";
+        key = key.toLowerCase();
+        userWord = userWord.toLowerCase();
+        ArrayList<Integer> characterShift = shift(key);
+        int keyLength = key.length();
+        for (int i = 0; i < userWord.length(); i++) {
+            int shift = characterShift.get(i % keyLength);
+            Character character = userWord.charAt(i);
+            String stringCharacter = character.toString();
+            String encryptedLetter = JaydenCeaserCipher.decryptOneKey(stringCharacter, shift);
+            encryptedString += encryptedLetter;
+        }
+        return encryptedString;
+    }
+
+   /*
+   Shift method which takes in the key from the user and finds the individual indexes of each letter 
+   from the user key in the alphabet and inputs it into an array
+    */
+    public static ArrayList<Integer> shift(String key) {
+        ArrayList<Integer> keyIndexes = new ArrayList<Integer>();
+        for (int i = 0; i < key.length(); i++) {
+            char keyChar = key.charAt(i);
+            int keyIndex = alphabet.indexOf(keyChar);
+            keyIndexes.add(keyIndex);
+        }
+        return keyIndexes;
+    }
+}

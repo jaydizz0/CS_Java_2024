@@ -1,0 +1,13 @@
+public class JaydenMainCipher extends JaydenVigenereCipher{
+    public static void main(String[] args){
+        System.out.println(JaydenCeaserCipher.encrypt("I like coding", 15));
+        System.out.println(JaydenCeaserCipher.decryptOneKey("x axzt rdsxcv", 15));
+        System.out.println(JaydenVigenereCipher.encryptVigenere("Like coding", "allday"));
+        System.out.println(JaydenVigenereCipher.decryptVigenere("ltvh aootqg", "allday"));
+    }
+    
+}
+
+
+
+

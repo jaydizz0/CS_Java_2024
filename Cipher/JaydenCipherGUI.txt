@@ -1,0 +1,147 @@
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import javax.swing.*;
+
+public class CipherGUI {
+    public static void main(String args[]) throws IOException {
+        createAndShowGUI();
+    }
+
+    public static void createAndShowGUI() throws IOException {
+
+        // main frame
+        JFrame frame = new JFrame("Ciphers");
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setPreferredSize(new Dimension(600, 600));
+        frame.add(mainPanel);
+
+        // image 
+        ImageIcon icon = new ImageIcon("images/Vigenere.jpg");
+        JLabel imageLabel = new JLabel(icon);
+        imageLabel.setPreferredSize(new Dimension(400, 600));
+        mainPanel.add(imageLabel, BorderLayout.NORTH);
+
+        // panel to hold all input, display, and button panels
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+
+        // Setting up grid layout for input and display panels
+        JPanel inputPanel = new JPanel(new GridLayout(6, 1)); // Using GridLayout for inputPanel
+        centerPanel.add(inputPanel, BorderLayout.CENTER);
+
+        // Individual panel to encrypt text
+        JPanel userMessagePanel = new JPanel(new BorderLayout());
+        JLabel userMessageLabel = new JLabel("Enter Message:");
+        userMessagePanel.add(userMessageLabel, BorderLayout.NORTH);
+        JTextField userMessageField = new JTextField(100);
+        userMessageField.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC | java.awt.Font.BOLD, 22));
+        userMessageField.setForeground(java.awt.Color.BLUE);
+        userMessageField.setBackground(java.awt.Color.YELLOW);
+        userMessagePanel.add(userMessageField, BorderLayout.CENTER);
+
+        // Individual panel for the key
+        JPanel decryptionKeyPanel = new JPanel(new BorderLayout());
+        JLabel decryptionKeyLabel = new JLabel("Enter Decryption Key:");
+        decryptionKeyPanel.add(decryptionKeyLabel, BorderLayout.NORTH);
+        JTextField decryptionKeyField = new JTextField(100);
+        decryptionKeyField.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC | java.awt.Font.BOLD, 22));
+        decryptionKeyField.setForeground(java.awt.Color.BLUE);
+        decryptionKeyField.setBackground(java.awt.Color.YELLOW);
+        decryptionKeyPanel.add(decryptionKeyField, BorderLayout.CENTER);
+
+        // Panel to display encrypted text
+        JPanel encryptedMessagePanel = new JPanel(new BorderLayout());
+        JLabel encryptedMessageLabel = new JLabel("Encrypted Message:");
+        encryptedMessagePanel.add(encryptedMessageLabel, BorderLayout.NORTH);
+        JTextField encryptedMessageField = new JTextField(100);
+        encryptedMessageField.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC | java.awt.Font.BOLD, 22));
+        encryptedMessageField.setForeground(java.awt.Color.BLUE);
+        encryptedMessageField.setBackground(java.awt.Color.WHITE);
+        encryptedMessageField.setEditable(false); 
+        encryptedMessagePanel.add(encryptedMessageField, BorderLayout.CENTER);
+
+        // Panel for encrypted text input
+        JPanel userInputEncryptedTextPanel = new JPanel(new BorderLayout());
+        JLabel userInputEncryptedTextLabel = new JLabel("Enter Encrypted Text:");
+        userInputEncryptedTextPanel.add(userInputEncryptedTextLabel, BorderLayout.NORTH);
+        JTextField userInputEncryptedTextField = new JTextField(100);
+        userInputEncryptedTextField.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC | java.awt.Font.BOLD, 22));
+        userInputEncryptedTextField.setForeground(java.awt.Color.BLUE);
+        userInputEncryptedTextField.setBackground(java.awt.Color.YELLOW);
+        userInputEncryptedTextPanel.add(userInputEncryptedTextField, BorderLayout.CENTER);
+
+        // Panel for key of encrypted text
+        JPanel userInputDecryptionKeyPanel = new JPanel(new BorderLayout());
+        JLabel userInputDecryptionKeyLabel = new JLabel("Enter Decryption Key:");
+        userInputDecryptionKeyPanel.add(userInputDecryptionKeyLabel, BorderLayout.NORTH);
+        JTextField userInputDecryptionKeyField = new JTextField(100);
+        userInputDecryptionKeyField.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC | java.awt.Font.BOLD, 22));
+        userInputDecryptionKeyField.setForeground(java.awt.Color.BLUE);
+        userInputDecryptionKeyField.setBackground(java.awt.Color.YELLOW);
+        userInputDecryptionKeyPanel.add(userInputDecryptionKeyField, BorderLayout.CENTER);
+
+        // Panel to display decrypted message
+        JPanel decryptedMessagePanel = new JPanel(new BorderLayout());
+        JLabel decryptedMessageLabel = new JLabel("Decrypted Message:");
+        decryptedMessagePanel.add(decryptedMessageLabel, BorderLayout.NORTH);
+        JTextField decryptedMessageField = new JTextField(100);
+        decryptedMessageField.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC | java.awt.Font.BOLD, 22));
+        decryptedMessageField.setForeground(java.awt.Color.BLUE);
+        decryptedMessageField.setBackground(java.awt.Color.WHITE);
+        decryptedMessageField.setEditable(false); // Set as read-only
+        decryptedMessagePanel.add(decryptedMessageField, BorderLayout.CENTER);
+
+        // adding all input and display panels to the input panel 
+        inputPanel.add(userMessagePanel);
+        inputPanel.add(decryptionKeyPanel);
+        inputPanel.add(encryptedMessagePanel);
+        inputPanel.add(userInputEncryptedTextPanel);
+        inputPanel.add(userInputDecryptionKeyPanel);
+        inputPanel.add(decryptedMessagePanel);
+
+        // button panel for the bottom of the frame
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Panel for buttons
+        buttonPanel.setPreferredSize(new Dimension(100, 50));
+        centerPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        JButton encryptButton = new JButton("Encrypt");
+        buttonPanel.add(encryptButton);
+
+        JButton decryptButton = new JButton("Decrypt");
+        buttonPanel.add(decryptButton);
+
+        // Action listener for Encrypt button, when clicked runs encrypt algorithm 
+        encryptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String plaintext = userMessageField.getText();
+                String key = decryptionKeyField.getText();
+            
+                String encrypted = JaydenVigenereCipher.encryptVigenere(plaintext, key);
+
+                encryptedMessageField.setText(encrypted);
+            }
+        });
+
+        // Action listener for Decrypt button, when clicked runs decrypt algorithm 
+        decryptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String encryptedText = userInputEncryptedTextField.getText();
+                String key = userInputDecryptionKeyField.getText();
+                String decrypted = JaydenVigenereCipher.decryptVigenere(encryptedText, key);
+              
+                decryptedMessageField.setText(decrypted);
+            }
+        });
+
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+}
